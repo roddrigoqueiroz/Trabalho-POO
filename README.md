@@ -1,3 +1,7 @@
+# Requisitos de implementação
+
+Este arquivo contém os requisitos de implementação do sistema de agência bancária para o trabalho de POO da UFU.
+
 # Detalhes de Conta
 
 - Superclasse asbtrata de: Corrente, Poupança e Salário
