@@ -97,64 +97,64 @@ public abstract class Conta {
 
     //getters and setters
 
-    protected void setSenha(String senha){
+    public void setSenha(String senha){
         if(senha.length()<=34){
         this.senha = senha;}
         else{throw new Error("Erro!! Senha muito grande");}
     }
-    protected String getSenha(){
+    public String getSenha(){
         return senha;
     }
 
-    protected void setDono(String dono){
+    public void setDono(String dono){
         cliente.setNome = dono;
     }
-    protected String getDono(){
+    public String getDono(){
         return cliente.getNome;
     }
 
-    protected void setStatus(boolean status){
+    public void setStatus(boolean status){
         this.status = status;
     }
-    protected String getStatus(){ //implementei uma string inves de boolean para receber o texto formatado mais facilmente
+    public String getStatus(){ //implementei uma string inves de boolean para receber o texto formatado mais facilmente
         String str;
         if(status){str = "Conta Ativada";}
         else{str = "Conta Desativada";}
         return str;
     }
 
-    protected void setDataAbertura(LocalDate dataAbertura){
+    public void setDataAbertura(LocalDate dataAbertura){
         this.dataAbertura = dataAbertura;
     }
-    protected LocalDate getDataAbertura(){
+    public LocalDate getDataAbertura(){
         return dataAbertura;
     }
 
-    protected void setDataModificacao(LocalDate dataModificacao){
+    public void setDataModificacao(LocalDate dataModificacao){
         this.dataModificacao = dataModificacao;
     }
-    protected LocalDate getDataModificacao(){
+    public LocalDate getDataModificacao(){
         return dataModificacao;
     }
 
-    protected void setNumeroDaConta(double numeroDaConta){
+    public void setNumeroDaConta(double numeroDaConta){
         this.numeroDaConta = numeroDaConta;
     }
-    protected double getNumeroDaConta(){
+    public double getNumeroDaConta(){
         return numeroDaConta;
     }
 
-    protected void setSaldo(double saldo){
+    public void setSaldo(double saldo){
         this.saldo = saldo;
     }
-    protected double getSaldo(){
+    public double getSaldo(){
         return saldo;
     }
 
-    protected void setNumeroAgencia(double numeroAgencia){
+    public void setNumeroAgencia(double numeroAgencia){
         this.numeroAgencia = numeroAgencia;
     }
-    protected double getNumeroAgencia(){
+    public double getNumeroAgencia(){
         return numeroAgencia;
     }
 
