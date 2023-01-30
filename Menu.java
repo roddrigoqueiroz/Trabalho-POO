@@ -1,17 +1,13 @@
 import Pessoas.*;
 import java.util.Scanner;
 import Agencias.*;
+import Exceptions.LoginFalsoException;
+
 import java.io.*;
 import java.util.LinkedList;
 /**
  * TO DO:
- * - Arrumar taxa
- * - Arrumar pertencimento de conta(cliente possuir as contas)// acho q da p so fazer pelo nome
- * - Achar pra que usa a taxa
- * - Implementar limite do saque na conta salario
- * - Implementar saque e depósito em cada tipo de conta
- * - Implementar taxa de administração por transação
- * - Fazer um método pagamento que transfere dinheiro entre contas
+ * - Arrumar pertencimento de conta(cliente possuir as contas)// PRECISO TESTAR MAIS TARDE
 
  * - Login de Administrador
  * - achar um jeito de por erro no login
@@ -116,7 +112,7 @@ public class Menu {
 
     public void opcoesAdministrador() throws Exception {
         if (!administradorAtivo.estaLogado())
-            throw new Exception("Erro!! Voce nao fez o login");
+            throw new LoginFalsoException("Erro!! Voce nao fez o login");
         
         int op;
         while(true){
