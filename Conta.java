@@ -1,6 +1,7 @@
 import Pessoas.*;
 import java.time.LocalDate;
 import java.util.Scanner;
+import Exceptions.*;
 
 
 public abstract class Conta {
@@ -11,13 +12,13 @@ public abstract class Conta {
     protected LocalDate dataAbertura, dataModificacao;
     protected double numeroDaConta, saldo, numeroAgencia; //usei double pois pode ser que uma dessas variaveis estourem o valor do int
     protected Cliente cliente; //cliente para registrar o dono da conta
-
+    protected double valorAux; //serve para armazenar o valor antes  da transacao
 
     Conta(String senha, Cliente cliente, double numeroDaConta, double numeroAgencia){//construtor com parametros
         status = true;
         if(senha.length()<=34){
             this.senha = senha;}
-            else{throw new Error("Erro!! Senha muito grande");}//VERIFICAR SE ESSE RETURN ESTA FUNCIONANDO
+            else{throw new SenhaIncorretamenteDigitadaException("Erro!! Senha muito grande");}
         this.cliente = cliente;
         dataAbertura = LocalDate.now(); //data atual
         dataModificacao = LocalDate.now();
@@ -26,8 +27,17 @@ public abstract class Conta {
         this.numeroAgencia = numeroAgencia;
 
     }
+    public abstract void saque(double valor);
+    public abstract void deposito(double valor);
+    public abstract double consultarSaldo();
+    public abstract void pagamento(double valor, Conta destino);
 
-    //as funcoes de login talvez sejam melhor em outro lugar, como no menu, se receber como parametro o boolean de logado pode ser que seja melhor
+
+    public double getValorAux() { //usado somente em operacoes matematicas, so retornado para ver o valor antigo
+        //antes da transacao
+        return valorAux;
+    }
+
     protected void login(){
         Scanner in = new Scanner(System.in);
         String digitado = "";
@@ -37,7 +47,7 @@ public abstract class Conta {
             logado = true;
             in.close();
         }
-        else{in.close(); throw new Error("Erro!! Senha incorreta");}
+        else{in.close(); throw new SenhaIncorretamenteDigitadaException("Erro!! Senha incorreta");}
         
     }
     protected void logoff(){
@@ -86,12 +96,12 @@ public abstract class Conta {
             }
             else{
                 in.close();
-                throw new Error("Erro!! Senhas digitadas sao diferentes, digite novamente");
+                throw new SenhaIncorretamenteDigitadaException("Erro!! Senhas digitadas sao diferentes, digite novamente");
                 }
             }
         }
         else{
-            throw new Error("Erro!! Necessario estar logado para realizar esta acao");
+            throw new LoginFalsoException("Erro!! Necessario estar logado para realizar esta acao");
         }
 
     }
@@ -101,7 +111,7 @@ public abstract class Conta {
     public void setSenha(String senha){
         if(senha.length()<=34){
         this.senha = senha;}
-        else{throw new Error("Erro!! Senha muito grande");}
+        else{throw new SenhaIncorretamenteDigitadaException("Erro!! Senha muito grande");}
     }
     public String getSenha(){
         return senha;
