@@ -1,4 +1,5 @@
 import Pessoas.*;
+import Exceptions.*;
 
 public class ContaSalario extends Conta{
     private double limiteSaque, limiteTransferencia;
@@ -27,6 +28,35 @@ public class ContaSalario extends Conta{
 
     public void setTransferencia(double limiteTransferencia){
         this.limiteTransferencia = limiteTransferencia;
+    }
+
+    public void saque(double valor){
+        if(getSaldo()<valor){throw new SaldoInsuficienteException("Erro!! Saldo insuficiente!");}
+        if(valor > limiteSaque){throw new EstourouLimiteException("Erro!! Estourou o valor de limite!");}
+        else {
+            valorAux = getSaldo();
+            setSaldo(-valor);}
+    }
+
+    public void deposito(double valor){
+        if(valor>0){
+        valorAux = getSaldo();
+        setSaldo(getSaldo()+valor);}
+        else{throw new ValorMenorQue0Exception("Erro!! O valor deve ser maior que 0");}
+    }
+
+    public double consultarSaldo(){
+        return getSaldo();
+    }
+
+    public void pagamento(double valor, Conta destino){
+        if(valor>getSaldo()){throw new SaldoInsuficienteException("Erro!! Saldo insuficiente!");}
+        if(valor>limiteTransferencia){throw new EstourouLimiteException("Erro!! Estourou o valor de limite!");}
+        else{
+            valorAux = getSaldo();
+            setSaldo(-valor);
+            destino.setSaldo(valor);
+        }
     }
     
 }
