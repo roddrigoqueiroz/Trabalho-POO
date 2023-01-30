@@ -1,7 +1,7 @@
 import Pessoas.*;
 import java.util.Scanner;
 import Agencias.*;
-import Exceptions.LoginFalsoException;
+import Exceptions.*;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -329,4 +329,75 @@ public class Menu {
         return false;
     }
     
+    public void opcoesCliente(Conta c){//IMPORTANTE, PASSAR O TIPO DA CONTA NO CONSTRUTOR, NAO SO C
+        int op;
+        double valor;
+        String texto;
+        Conta recebedor = null;
+        System.out.println(" ===Agencia Bancaria da UFU===");
+        System.out.println("1.Fazer Saque");
+        System.out.println("2.Fazer Transferencia");
+        System.out.println("3.Fazer Deposito");
+        System.out.println("4.Checar dados da conta");
+        System.out.println("5.Mudar Senha");
+        System.out.println("6.Desativar Conta");
+        System.out.println("0.Sair");
+        System.out.printf("Opcao: ");
+        op = in.nextInt();
+        System.out.printf("\n");
+
+        switch(op){
+            case(1):
+                System.out.println("Qual o valor do saque?"); 
+                valor = in.nextDouble();
+                try{
+                    c.saque(valor);
+                    System.out.println("Saque concluido com sucesso!!"); }
+                catch(Exception e){
+                    System.out.println(e);
+                }
+                break;
+            case(2):
+                System.out.println("Qual o valor da transferencia?");
+                valor = in.nextDouble();
+                System.out.println("Qual o nome da conta destino?");
+                texto = in.nextLine();
+                for (Conta conta : listaConta) {
+                    if (texto.equals(conta.getDono())){
+                        recebedor = conta;
+                    }
+                }
+                if(recebedor == null)throw new ContaNaoEncontradaException("Nao foi possivel encontrar a conta");
+                System.out.println("Transferencia concluida com sucesso!!");
+                c.pagamento(valor, recebedor);
+                break;
+            case(3):
+                System.out.println("Qual o valor do deposito?"); 
+                valor = in.nextDouble();
+                try{
+                    c.deposito(valor);
+                    System.out.println("Deposito concluido com sucesso!!"); }
+                catch(Exception e){
+                    System.out.println(e);
+                }
+            case(4):
+                c.dadosDaConta();
+                break;
+            case(5):
+                c.mudarSenha();
+                break;
+            case(6):
+                System.out.println("Digite sua senha para confirmar essa operacao\nSenha:");
+                texto = in.nextLine();
+                if(texto.equals(c.getSenha())){
+                    c.setStatus(false);
+                    logoff();
+                    in.close();
+                    System.exit(0);
+                }
+                else throw new SenhaIncorretamenteDigitadaException("Senha incorreta");
+
+            default: break;
+        }
+    }
 }
