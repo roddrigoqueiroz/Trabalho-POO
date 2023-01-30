@@ -1,3 +1,5 @@
+import Pessoas.*;
+
 public class ContaSalario extends Conta{
     private double limiteSaque, limiteTransferencia;
 

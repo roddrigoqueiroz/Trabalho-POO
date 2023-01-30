@@ -1,3 +1,4 @@
+import Pessoas.*;
 public class ContaCorrente extends Conta{
     private double limite, taxa;
 

@@ -1,3 +1,4 @@
+import Pessoas.*;
 import java.util.Random;
 
 public class ContaPoupanca extends Conta{
@@ -18,7 +19,7 @@ public class ContaPoupanca extends Conta{
     private void simulaVariacaoRendimento(){ //utilizar toda vez que houver uma transacao
         Random r = new Random();
         rendimento = 1; //rendimento volta para 1 pois poderia ficar ridiculamente alto caso contrario
-        rendimento = rendimento * r.nextDouble(1,1.3); /*gera um numero entre 1 e 1.3 toda vez que a funcao
+        rendimento = rendimento * r.nextDouble(); /*gera um numero entre 1 e 1.3 toda vez que a funcao
                                                             *for chamada para simular a variacao do rendimento */                                                 
     }
 
