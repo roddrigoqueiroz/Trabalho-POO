@@ -33,7 +33,7 @@ public class ContaPoupanca extends Conta{
         if(getSaldo()<valor){throw new SaldoInsuficienteException("Erro!! Saldo insuficiente!");}
         else {
             valorAux = getSaldo();
-            setSaldo(-valor);}
+            setSaldo(getSaldo()-valor);}
     }
 
     public void deposito(double valor){
@@ -52,7 +52,7 @@ public class ContaPoupanca extends Conta{
         else{
             valorAux = getSaldo();
             setSaldo(-valor);
-            destino.setSaldo(valor);
+            destino.setSaldo(destino.getSaldo()+valor);
         }
     }
     
