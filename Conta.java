@@ -38,18 +38,6 @@ public abstract class Conta {
         return valorAux;
     }
 
-    protected void login(){
-        Scanner in = new Scanner(System.in);
-        String digitado = "";
-        System.out.println("Digite a senha: ");
-        digitado = in.nextLine();
-        if(digitado == senha){
-            logado = true;
-            in.close();
-        }
-        else{in.close(); throw new SenhaIncorretamenteDigitadaException("Erro!! Senha incorreta");}
-        
-    }
     protected void logoff(){
         logado = false; //fazer mensagem de logoff no menu, pois assim metodos podem usar desta funcao mais facilmente
     }
@@ -79,23 +67,21 @@ public abstract class Conta {
         return censura;
     }
 
-    protected void mudarSenha(){/*muda a senha e desloga*/
+    protected void mudarSenha(boolean logado){/*muda a senha e desloga*/
         if(logado){
             while(true){ //while pro loop infinito no caso do cliente errar a senha
             Scanner in = new Scanner(System.in);
             String digitado = "", confirmacao = "";
-            System.out.println("Digite a nova senha: ");
-            digitado = in.nextLine();
-            System.out.println("Confirme a senha digitada: ");
-            confirmacao = in.nextLine();
-            if(digitado == confirmacao){
+            System.out.print("Digite a nova senha: ");
+            digitado = in.next();
+            System.out.print("Confirme a senha digitada: ");
+            confirmacao = in.next();
+            if(digitado.equals(confirmacao)){
                 senha = digitado;
                 logoff();
-                in.close();
                 return;
             }
             else{
-                in.close();
                 throw new SenhaIncorretamenteDigitadaException("Erro!! Senhas digitadas sao diferentes, digite novamente");
                 }
             }

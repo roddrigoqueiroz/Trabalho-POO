@@ -54,7 +54,8 @@ public class ContaSalario extends Conta{
         if(valor>limiteTransferencia){throw new EstourouLimiteException("Erro!! Estourou o valor de limite!");}
         else{
             valorAux = getSaldo();
-            setSaldo(getSaldo()-valor);}
+            setSaldo(getSaldo()-valor);
             destino.setSaldo(destino.getSaldo()+valor);
         }
-    }  
+    }
+}  
