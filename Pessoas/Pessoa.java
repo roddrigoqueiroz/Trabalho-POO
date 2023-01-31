@@ -3,9 +3,11 @@ package Pessoas;
 // fonte pra criar a classe: https://rollbar.com/blog/java-exceptions-hierarchy-explained/#
 
 import java.time.LocalDate;
+
+import java.io.Serializable;
 import java.lang.Integer;
 
-public abstract class Pessoa {
+public abstract class Pessoa implements Serializable {
     protected String CPF;
     protected String nome;
     protected String endereco;

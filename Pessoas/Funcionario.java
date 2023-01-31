@@ -70,4 +70,5 @@ public class Funcionario extends Pessoa {
     public String getCargo() {return cargo;}
     public double getSalario() {return calculaSalario();}
     public int getAnoIngresso() {return anoIngresso;}
+
 }

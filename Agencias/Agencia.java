@@ -1,20 +1,23 @@
-import Pessoas.Gerente;
+// Fazer filtro de erros
+package Agencias;
+import Pessoas.*;
+
 import java.io.*;
 import java.lang.Integer;
 
-public class Agencia {
+public class Agencia implements Serializable {
     private int numero;
     private String nome;
     private String endereco;
-    private Gerente gerente;
+    private DadosPessoasAgencia pessoasDaAgencia;
 
     private final String ARQUIVO = "id-agencia.txt";
 
     public Agencia(String nome, String endereco, Gerente gerente){
         this.nome = nome;
         this.endereco = endereco;
-        this.gerente = gerente;
-
+        pessoasDaAgencia = new DadosPessoasAgencia(gerente);
+        pessoasDaAgencia.getGerente().setNumeroAgencia(numero);
         this.numero = geraNumero();
     }
 
@@ -56,8 +59,28 @@ public class Agencia {
                             numero, nome, endereco);
     }
 
+    public void addCliente(Cliente novoCliente){
+        try {
+            pessoasDaAgencia.addCliente(novoCliente);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    public void addFuncionario(Funcionario novFuncionario){
+        try{
+            pessoasDaAgencia.addFuncionario(novFuncionario);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public int getNumero() {return numero;}
     public String getNome() {return nome;}
     public String getEndereco() {return endereco;}
-    public Gerente getGerente() {return gerente;}
+    public Gerente getGerente() {return pessoasDaAgencia.getGerente();}
+
+    public void printClientes() {pessoasDaAgencia.printClientes();}
+    public void printFuncionarios() {pessoasDaAgencia.printFuncionarios();}
 }
