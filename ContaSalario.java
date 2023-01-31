@@ -35,7 +35,7 @@ public class ContaSalario extends Conta{
         if(valor > limiteSaque){throw new EstourouLimiteException("Erro!! Estourou o valor de limite!");}
         else {
             valorAux = getSaldo();
-            setSaldo(-valor);}
+            setSaldo(getSaldo()-valor);}
     }
 
     public void deposito(double valor){
@@ -54,9 +54,7 @@ public class ContaSalario extends Conta{
         if(valor>limiteTransferencia){throw new EstourouLimiteException("Erro!! Estourou o valor de limite!");}
         else{
             valorAux = getSaldo();
-            setSaldo(-valor);
-            destino.setSaldo(valor);
+            setSaldo(getSaldo()-valor);}
+            destino.setSaldo(destino.getSaldo()+valor);
         }
-    }
-    
-}
+    }  
