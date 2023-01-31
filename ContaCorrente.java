@@ -36,13 +36,13 @@ public class ContaCorrente extends Conta{
         if(getSaldo()<valor){throw new SaldoInsuficienteException("Erro!! Saldo insuficiente!");}
         else {
             valorAux = getSaldo();
-            setSaldo(-valor);}
+            setSaldo(getSaldo()-valor);}
     }
 
     public void deposito(double valor){
-        if(valor>0 && getSaldo()+(valor*taxa) <= limite){
+        if(valor>0 && getSaldo()+(valor*(-taxa)) <= limite){
         valorAux = getSaldo();
-        setSaldo(getSaldo()+(valor*taxa));}
+        setSaldo(getSaldo()+(valor*(-taxa)));}
         else{throw new ValorMenorQue0Exception("Erro!! O valor deve ser maior que 0 ou menor que o limite");}
     }
 
@@ -55,7 +55,7 @@ public class ContaCorrente extends Conta{
         else{
             valorAux = getSaldo();
             setSaldo(valor);
-            destino.setSaldo(valor*taxa);
+            destino.setSaldo(destino.getSaldo()+(valor*(-taxa)));
         }
     }
 
