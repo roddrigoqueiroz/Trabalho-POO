@@ -48,7 +48,9 @@ public class Menu {
             switch(op){
                 case 1:
                     try {
-                        loginCLiente();
+                        Cliente cliente = loginCLiente();
+                        Conta c = achaContaDono(cliente);
+                        opcoesCliente(c);
                     } catch (Exception e){
                         System.out.println(e);
                     }
@@ -221,9 +223,9 @@ public class Menu {
         return;
     }
 
-    public void loginCLiente() throws Exception {
-        if (logado)
-            return;
+    public Cliente loginCLiente() throws Exception {
+        //if (logado)
+        //    return;
 
         String login, senha;
         System.out.println("======Login Cliente======");
@@ -235,13 +237,12 @@ public class Menu {
         for (Cliente cliente : listaCliente) {
             if (login.equals(cliente.getNome()) && achaSenha(cliente.getNome(), senha)){
                 logado = true;
-                return;
+                return cliente;
             }
         }
 
         throw new Exception("Erro!! Usuario inexistente ou senha errada. Tente novamente.");
     }
-    // public void mudarSenha(){}
 
     public void criarConta(){
         int op, numeroAgencia;
@@ -328,8 +329,18 @@ public class Menu {
         }
         return false;
     }
+    public Conta achaContaDono(Cliente cliente){
+        for (Conta conta : listaConta){
+            if (cliente.getNome().equals(conta.getDono())){
+                return conta;
+            }
+
+        }
+        throw new ContaNaoEncontradaException("Conta nao foi encontrada");
+    }
     
-    public void opcoesCliente(Conta c){//IMPORTANTE, PASSAR O TIPO DA CONTA NO CONSTRUTOR, NAO SO C
+    public void opcoesCliente(Conta parametro){
+        Conta c = parametro;
         int op;
         double valor;
         String texto;
