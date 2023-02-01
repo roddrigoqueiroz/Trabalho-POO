@@ -10,12 +10,19 @@ public class Administrador implements Serializable {
         this.logado = true;
         setSenha(senha);
     }
+    public Administrador(){
+        this.logado = false;
+    }
 
     public void setSenha(String senha){
         if (senha.length() <= 34)
             this.senha = senha;
         else
             throw new Error("Erro!! Senha muito grande");
+    }
+
+    public void print(){
+        System.out.println("Login: " + login + "\nSenha: " + senha);
     }
 
     public String getLogin() {
