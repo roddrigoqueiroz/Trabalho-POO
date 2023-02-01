@@ -29,21 +29,19 @@ public class ContaPoupanca extends Conta{
         this.rendimento = rendimento;
     }
 
-    public void saque(double valor){
+    public Transacao saque(double valor){
         if(getSaldo()<valor){throw new SaldoInsuficienteException("Erro!! Saldo insuficiente!");}
         else {
             valorAux = getSaldo();
             setSaldo(getSaldo()-valor);
-            Transacao t = new Transacao(this, getDataAtual(), "Caixa eletronico");
-            System.out.println(t.printRecibo());}
+            return new Transacao(this, getDataAtual(), "Caixa eletronico");}
     }
 
-    public void deposito(double valor){
+    public Transacao deposito(double valor){
         if(valor>0){
         valorAux = getSaldo();
         setSaldo((getSaldo()*rendimento)+valor);
-        Transacao t = new Transacao(this, getDataAtual(), "Digital");
-        System.out.println(t.printRecibo());}
+        return new Transacao(this, getDataAtual(), "Digital");}
         else{throw new ValorMenorQue0Exception("Erro!! O valor deve ser maior que 0");}
     }
 
@@ -51,14 +49,13 @@ public class ContaPoupanca extends Conta{
         return getSaldo();
     }
 
-    public void pagamento(double valor, Conta destino){
+    public Transacao pagamento(double valor, Conta destino){
         if(valor>getSaldo()){throw new SaldoInsuficienteException("Erro!! Saldo insuficiente!");}
         else{
             valorAux = getSaldo();
             setSaldo(getSaldo() - valor);
             destino.setSaldo(destino.getSaldo()+valor);
-            Transacao t = new Transacao(this, getDataAtual(), "Digital");
-            System.out.println(t.printRecibo());
+            return new Transacao(this, getDataAtual(), "Digital");
         }
     }
     
