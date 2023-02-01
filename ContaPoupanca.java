@@ -33,13 +33,17 @@ public class ContaPoupanca extends Conta{
         if(getSaldo()<valor){throw new SaldoInsuficienteException("Erro!! Saldo insuficiente!");}
         else {
             valorAux = getSaldo();
-            setSaldo(getSaldo()-valor);}
+            setSaldo(getSaldo()-valor);
+            Transacao t = new Transacao(this, getDataAtual(), "Caixa eletronico");
+            System.out.println(t.printRecibo());}
     }
 
     public void deposito(double valor){
         if(valor>0){
         valorAux = getSaldo();
-        setSaldo((getSaldo()*rendimento)+valor);}
+        setSaldo((getSaldo()*rendimento)+valor);
+        Transacao t = new Transacao(this, getDataAtual(), "Digital");
+        System.out.println(t.printRecibo());}
         else{throw new ValorMenorQue0Exception("Erro!! O valor deve ser maior que 0");}
     }
 
@@ -53,6 +57,8 @@ public class ContaPoupanca extends Conta{
             valorAux = getSaldo();
             setSaldo(getSaldo() - valor);
             destino.setSaldo(destino.getSaldo()+valor);
+            Transacao t = new Transacao(this, getDataAtual(), "Digital");
+            System.out.println(t.printRecibo());
         }
     }
     
