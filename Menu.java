@@ -23,7 +23,8 @@ public class Menu {
     private LinkedList<Transacao> listaTransacao = new LinkedList<Transacao>();
     private Administrador administradorAtivo = new Administrador();
     private Cliente clienteAtivo;
-
+    private String senhaKeyAdmin = "ufu123";
+    
     private final String CLIENTE_SER = "lista-cliente.ser";
     private final String CONTA_SER = "lista-conta.ser";
     private final String ADMIN_SER = "lista-admin.ser";
