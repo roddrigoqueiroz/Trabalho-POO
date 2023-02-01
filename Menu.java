@@ -44,8 +44,7 @@ public class Menu {
             switch(op){
                 case 1:
                     try {
-                        Cliente cliente = loginCLiente();
-                        Conta c = achaContaDono(cliente);
+                        Conta c = loginCLiente();
                         opcoesCliente(c);
                     } catch (Exception e){
                         System.out.println(e);
@@ -231,7 +230,7 @@ public class Menu {
         for (Cliente cliente : listaCliente) {
             if (login.equals(cliente.getNome()) && achaSenha(cliente.getNome(), senha)){
                 logado = true;
-                return cliente;
+                return achaContaDono(cliente, senha);
             }
         }
 
@@ -323,9 +322,9 @@ public class Menu {
         }
         return false;
     }
-    public Conta achaContaDono(Cliente cliente){
+    public Conta achaContaDono(Cliente cliente, String senha){
         for (Conta conta : listaConta){
-            if (cliente.getNome().equals(conta.getDono())){
+            if (cliente.getNome().equals(conta.getDono()) && senha.equals(conta.getSenha())){
                 return conta;
             }
 
