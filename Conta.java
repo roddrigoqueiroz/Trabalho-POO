@@ -1,10 +1,12 @@
 import Pessoas.*;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Scanner;
 import Exceptions.*;
 
 
-public abstract class Conta {
+public abstract class Conta implements Serializable {
 
     protected String senha;
     protected boolean status; //se a conta esta ativa ou nao
@@ -154,7 +156,6 @@ public abstract class Conta {
     public double getNumeroAgencia(){
         return numeroAgencia;
     }
-
     public LocalDate getDataAtual() {
         return dataAbertura = LocalDate.now();
     }
