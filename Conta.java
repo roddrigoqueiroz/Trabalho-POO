@@ -9,7 +9,7 @@ public abstract class Conta {
     protected String senha;
     protected boolean status; //se a conta esta ativa ou nao
     private boolean logado; //flag para facilitar operacoes e nao precisar ficar logando toda hora
-    protected LocalDate dataAbertura, dataModificacao;
+    protected LocalDate dataAbertura, dataModificacao, dataAtual;
     protected double numeroDaConta, saldo, numeroAgencia; //usei double pois pode ser que uma dessas variaveis estourem o valor do int
     protected Cliente cliente; //cliente para registrar o dono da conta
     protected double valorAux; //serve para armazenar o valor antes  da transacao
@@ -154,6 +154,9 @@ public abstract class Conta {
     public double getNumeroAgencia(){
         return numeroAgencia;
     }
-    
+
+    public LocalDate getDataAtual() {
+        return dataAbertura = LocalDate.now();
+    }
 
 }
