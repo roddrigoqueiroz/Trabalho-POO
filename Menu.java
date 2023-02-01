@@ -237,12 +237,18 @@ public class Menu {
     }
 
     public void criarConta(){
-        int op, numeroAgencia;
+         int op, numeroAgencia;
         String nome, CPF, senha;
         Agencia agencia = null;
 
         System.out.println("\n======Criar Conta======");
+        System.out.println("Ja possui uma conta?");
+        System.out.println("1.Sim");
+        System.out.println("2.Nao");
+        System.out.print("Opcao: ");
+        op = in.nextInt();
 
+        
         System.out.print("Informar seu nome: ");
         nome = in.next();
         System.out.print("Informar seu CPF: ");
@@ -256,12 +262,23 @@ public class Menu {
             System.out.println(e);
             System.out.println("Tente novamente.");
         }
-
+        if(op == 2){
         Cliente cliente = new Cliente(CPF, nome, agencia);
         listaCliente.add(cliente);
-
+    }
+        Cliente cliente = achaNomeCliente(nome); /*esta criacao de cliente serve para o ja com uma conta
+        nao precisar criar outro cliente, ja o que criou agora so faz a busca depois de ser adicionado a lista
+        e eh selecionado para o resto do processo */
+        
         System.out.print("Crie sua senha: ");
         senha = in.next();
+
+        try {
+            agencia = buscaAgencia(numeroAgencia);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Tente novamente.");
+        }
         
         System.out.println("Escolha o tipo de conta: ");
         System.out.printf("1.Conta Corrente");
@@ -285,9 +302,8 @@ public class Menu {
             default:System.out.println("Valor digitado invalido");
         }
         System.out.println("Conta criada com sucesso!!");
-
-    
     }
+
 
     public Agencia buscaAgencia(int numeroAgencia) throws Exception {
         for (Agencia agencia : listaAgencia) {
@@ -331,6 +347,15 @@ public class Menu {
         throw new ContaNaoEncontradaException("Conta nao foi encontrada");
     }
     
+        public Cliente achaNomeCliente(String nome){
+        for (Conta conta : listaConta){
+            if (nome.equals(conta.getDono())){
+                return conta.getCliente();
+            }
+        }
+        throw new ContaNaoEncontradaException("Conta nao foi encontrada");
+    }
+    
     public void opcoesCliente(Conta parametro){
         Conta c = parametro;
         int op;
@@ -353,8 +378,9 @@ public class Menu {
             System.out.printf("Opcao: ");
             op = in.nextInt();
             System.out.printf("\n");
-            
-            if(c.getStatus().equals("Conta Desativada")){return;}
+            if(c.getStatus().equals("Conta Desativada")){
+                throw new ContaDesativadaException("Sua conta esta desativada, por favor contatar o suporte do banco");
+            }
             switch(op){
                 case(1):
                     System.out.println("Qual o valor do saque?"); 
