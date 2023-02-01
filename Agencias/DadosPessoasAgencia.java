@@ -4,9 +4,11 @@ package Agencias;
 // que estão vinculados a esta agência
 import java.util.ArrayList;
 import Pessoas.*;
+
+import java.io.Serializable;
 import java.lang.Exception;
 
-public class DadosPessoasAgencia {
+public class DadosPessoasAgencia implements Serializable {
     private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
     private ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
     private Gerente gerente;

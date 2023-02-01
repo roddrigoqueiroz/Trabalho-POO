@@ -5,8 +5,8 @@ import Exceptions.*;
 public class ContaPoupanca extends Conta{
     private double rendimento = 1;
 
-    ContaPoupanca(String senha, Cliente cliente, double numeroDaConta, double numeroAgencia, double rendimento){
-        super(senha, cliente, numeroDaConta, numeroAgencia);
+    ContaPoupanca(String senha, Cliente cliente, double numeroAgencia, double rendimento){
+        super(senha, cliente, numeroAgencia);
         this.rendimento = rendimento;
     }
 

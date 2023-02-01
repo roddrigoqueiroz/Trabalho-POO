@@ -1,5 +1,5 @@
 import Pessoas.*;
-
+import java.io.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -12,11 +12,14 @@ public abstract class Conta implements Serializable {
     protected boolean status; //se a conta esta ativa ou nao
     private boolean logado; //flag para facilitar operacoes e nao precisar ficar logando toda hora
     protected LocalDate dataAbertura, dataModificacao, dataAtual;
-    protected double numeroDaConta, saldo, numeroAgencia; //usei double pois pode ser que uma dessas variaveis estourem o valor do int
+    protected double saldo, numeroAgencia; //usei double pois pode ser que uma dessas variaveis estourem o valor do int
+    protected int numeroDaConta;
     protected Cliente cliente; //cliente para registrar o dono da conta
     protected double valorAux; //serve para armazenar o valor antes  da transacao
 
-    Conta(String senha, Cliente cliente, double numeroDaConta, double numeroAgencia){//construtor com parametros
+    private final String ARQUIVO = "id-conta.txt";
+
+    Conta(String senha, Cliente cliente, double numeroAgencia){//construtor com parametros
         status = true;
         if(senha.length()<=34){
             this.senha = senha;}
@@ -25,7 +28,7 @@ public abstract class Conta implements Serializable {
         dataAbertura = LocalDate.now(); //data atual
         dataModificacao = LocalDate.now();
         saldo = 0;
-        this.numeroDaConta = numeroDaConta;
+        this.numeroDaConta = geraNumero();
         this.numeroAgencia = numeroAgencia;
 
     }
@@ -94,6 +97,39 @@ public abstract class Conta implements Serializable {
 
     }
 
+    private int geraNumero(){
+        File f = new File(ARQUIVO);
+        
+        if (f.exists()){
+            try {
+                // Abre arquivo pra leitura
+                BufferedReader lerId = new BufferedReader(new FileReader(ARQUIVO));
+                int numeroLido = Integer.parseInt(lerId.readLine());
+                lerId.close();
+                numeroLido++; // atualiza o numero lido
+                // Reescreve o numero lido no arquivo
+                PrintWriter printaId = new PrintWriter(new FileWriter(ARQUIVO));
+                printaId.println(numeroLido);
+                printaId.close();
+                return numeroLido;
+            } catch (Exception e) {
+                System.out.println("Nao foi possivel abrir arquivo");
+            }
+        }
+        else {
+            try {
+                // Cria e já escreve o numero 0 no arquivo
+                PrintWriter printaId = new PrintWriter(new FileWriter(ARQUIVO));
+                printaId.println(0);
+                printaId.close();
+                return 0;
+            } catch (IOException e) {
+                System.out.println("Nao foi possivel criar arquivo");
+            }
+        }
+        return 0;
+    }
+
     //getters and setters
 
     public void setSenha(String senha){
@@ -136,7 +172,7 @@ public abstract class Conta implements Serializable {
         return dataModificacao;
     }
 
-    public void setNumeroDaConta(double numeroDaConta){
+    public void setNumeroDaConta(int numeroDaConta){
         this.numeroDaConta = numeroDaConta;
     }
     public double getNumeroDaConta(){

@@ -4,8 +4,8 @@ import Exceptions.*;
 public class ContaCorrente extends Conta{
     private double limite, taxaAdm, taxaParaCalculo;
 
-    ContaCorrente(String senha, Cliente cliente, double numeroDaConta, double numeroAgencia, double limite, double taxaAdm){
-        super(senha, cliente, numeroDaConta, numeroAgencia);
+    ContaCorrente(String senha, Cliente cliente, double numeroAgencia, double limite, double taxaAdm){
+        super(senha, cliente, numeroAgencia);
         this.limite = limite;
         this.taxaAdm = taxaAdm;
         setTaxaParaCalculo(taxaAdm);

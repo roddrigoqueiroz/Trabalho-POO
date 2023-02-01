@@ -7,13 +7,10 @@ import java.io.*;
 import java.util.LinkedList;
 /**
  * TO DO:
- * - Arrumar pertencimento de conta(cliente possuir as contas)// PRECISO TESTAR MAIS TARDE
- * - CriarConta possui deve perguntar se já é cliente ou não antes de criá-lo
  */
 
 public class Menu {
     private boolean logado = false;
-    private double numeroDaConta = 1; //serve para dar numero para as contas, somando mesmo pois nao entendi o q era p ser
     private LinkedList<Cliente> listaCliente = new LinkedList<Cliente>();
     private LinkedList<Conta> listaConta = new LinkedList<Conta>();
     private LinkedList<Administrador> listaAdministrador = new LinkedList<Administrador>();
@@ -176,7 +173,7 @@ public class Menu {
         String CPF, nome, endereco, dataNasc, estadoCivil, CLT, RG, cargo;
         double salario;
         char sexo;
-        int anoIngresso;
+        int anoIngresso, numeroAgencia;
 
         System.out.printf("\n======Cadastro do Funcionario======\n");
 
@@ -202,9 +199,19 @@ public class Menu {
         salario = in.nextDouble();
         System.out.print("Digite o ano de ingresso na empresa: ");
         anoIngresso = in.nextInt();
+        System.out.println("Digite o numero da agencia em que esta trabalhando: ");
+        numeroAgencia = in.nextInt();
 
-        listaFuncionario.add(new Funcionario( CPF,  nome,  endereco,  dataNasc, estadoCivil,  CLT, RG,  sexo,
-        cargo,  salario,  anoIngresso));
+        Funcionario funcionario = new Funcionario( CPF,  nome,  endereco,  dataNasc, estadoCivil,  CLT, RG,  sexo,
+        cargo,  salario,  anoIngresso);
+        listaFuncionario.add(funcionario);
+
+        try {
+            Agencia a = buscaAgencia(numeroAgencia);
+            a.addFuncionario(funcionario);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
         System.out.println("Funcionario criado com sucesso!");
 
@@ -304,9 +311,10 @@ public class Menu {
     }
 
     public void criarConta(){
-         int op, numeroAgencia;
+        int op, numeroAgencia;
         String nome, CPF, senha;
         Agencia agencia = null;
+        Cliente cliente = null;
 
         System.out.println("\n======Criar Conta======");
         System.out.println("Ja possui uma conta?");
@@ -330,22 +338,20 @@ public class Menu {
             System.out.println("Tente novamente.");
         }
         if(op == 2){
-        Cliente cliente = new Cliente(CPF, nome, agencia);
-        listaCliente.add(cliente);
+            if (checaUsuario(nome)){
+                System.out.println("Ja existe um usuario com este nome. Tente outro nome");
+                return;
+            }
+            cliente = new Cliente(CPF, nome, agencia);
+            listaCliente.add(cliente);
+            agencia.addCliente(cliente);
     }
-        Cliente cliente = achaNomeCliente(nome); /*esta criacao de cliente serve para o ja com uma conta
+        cliente = achaNomeCliente(nome); /*esta criacao de cliente serve para o ja com uma conta
         nao precisar criar outro cliente, ja o que criou agora so faz a busca depois de ser adicionado a lista
         e eh selecionado para o resto do processo */
         
         System.out.print("Crie sua senha: ");
         senha = in.next();
-
-        try {
-            agencia = buscaAgencia(numeroAgencia);
-        } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Tente novamente.");
-        }
         
         System.out.println("Escolha o tipo de conta: ");
         System.out.printf("1.Conta Corrente");
@@ -354,17 +360,14 @@ public class Menu {
         System.out.printf("\nOpcao: ");
         op = in.nextInt();
         switch(op){
-            case 1: Conta cc = new ContaCorrente(senha, cliente, numeroDaConta, numeroAgencia, 300, 0.005); // este erro é mentira
+            case 1: Conta cc = new ContaCorrente(senha, cliente, numeroAgencia, 300, 0.005); // este erro é mentira
                 listaConta.add(cc);
-                numeroDaConta++;
                 break;
-            case 2: Conta cpoupanca = new ContaPoupanca(senha, cliente,  numeroDaConta, numeroAgencia, 1.1); 
+            case 2: Conta cpoupanca = new ContaPoupanca(senha, cliente, numeroAgencia, 1.1); 
                 listaConta.add(cpoupanca);
-                numeroDaConta++;
                 break;
-            case 3: Conta cs = new ContaSalario(senha, cliente,  numeroDaConta, numeroAgencia, 2000,  600);
+            case 3: Conta cs = new ContaSalario(senha, cliente, numeroAgencia, 2000,  600);
                 listaConta.add(cs);
-                numeroDaConta++;
                 break;
             default:System.out.println("Valor digitado invalido");
         }
@@ -382,7 +385,7 @@ public class Menu {
     
     public void salvarLista(LinkedList<?> lista, String nomeArquivo) throws Exception {
         if (lista.isEmpty())
-            throw new Exception("Lista vazia. Nao foi possivel salvar.");
+            throw new Exception("Lista vazia. Nao foi possivel salvar o arquivo: " + nomeArquivo);
 
         try {
             ObjectOutputStream serializador = new ObjectOutputStream(new FileOutputStream(nomeArquivo));
@@ -404,7 +407,7 @@ public class Menu {
                 System.out.println(e);
             }
         }
-        throw new Exception("Nao foi possivel carregar o arquivo.");
+        throw new Exception("Nao foi possivel carregar o arquivo:" + nomeArquivo);
     }
 
     public boolean salvar(){
@@ -424,13 +427,13 @@ public class Menu {
     }
     public boolean carregar(){
         try {
-            carregarLista(CLIENTE_SER);
-            carregarLista(CONTA_SER);
-            carregarLista(ADMIN_SER);
-            carregarLista(AGENCIA_SER);
-            carregarLista(GERENTE_SER);
-            carregarLista(FUNCIONARIO_SER);
-            carregarLista(TRANSACAO_SER);
+            listaCliente = (LinkedList<Cliente>) carregarLista(CLIENTE_SER);
+            listaConta = (LinkedList<Conta>) carregarLista(CONTA_SER);
+            listaAdministrador = (LinkedList<Administrador>)carregarLista(ADMIN_SER);
+            listaAgencia = (LinkedList<Agencia>)carregarLista(AGENCIA_SER);
+            listaGerente = (LinkedList<Gerente>)carregarLista(GERENTE_SER);
+            listaFuncionario = (LinkedList<Funcionario>)carregarLista(FUNCIONARIO_SER);
+            listaTransacao = (LinkedList<Transacao>)carregarLista(TRANSACAO_SER);
         } catch (Exception e) {
             System.out.println(e);
             return false;
@@ -458,7 +461,6 @@ public class Menu {
         }
         throw new ContaNaoEncontradaException("Conta nao foi encontrada");
     }
-
     public Cliente achaNomeCliente(String nome){
         for (Cliente cliente : listaCliente){
             if (nome.equals(cliente.getNome())){
@@ -466,6 +468,14 @@ public class Menu {
             }
         }
         throw new ContaNaoEncontradaException("Conta nao foi encontrada");
+    }
+    public boolean checaUsuario(String nome){
+        for(Cliente cliente : listaCliente){
+            if (nome.equals(cliente.getNome())){
+                return true;
+            }
+        }
+        return false;
     }
     
     public void opcoesCliente(Conta parametro){
@@ -497,7 +507,7 @@ public class Menu {
                     System.out.println("Qual o valor do saque?"); 
                     valor = in.nextDouble();
                     try{
-                        c.saque(valor);
+                        listaTransacao.add(c.saque(valor));
                         System.out.println("Saque concluido com sucesso!!"); }
                     catch(Exception e){
                         System.out.println(e);
@@ -515,13 +525,13 @@ public class Menu {
                     }
                     if(recebedor == null)throw new ContaNaoEncontradaException("Nao foi possivel encontrar a conta");
                     System.out.println("Transferencia concluida com sucesso!!");
-                    c.pagamento(valor, recebedor);
+                    listaTransacao.add(c.pagamento(valor, recebedor));
                     break;
                 case(3):
                     System.out.println("Qual o valor do deposito?"); 
                     valor = in.nextDouble();
                     try{
-                        c.deposito(valor);
+                        listaTransacao.add(c.deposito(valor));
                         System.out.println("Deposito concluido com sucesso!!"); }
                     catch(Exception e){
                         System.out.println(e);
