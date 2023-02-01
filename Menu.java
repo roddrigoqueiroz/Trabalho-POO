@@ -452,9 +452,9 @@ public class Menu {
     }
 
     public Cliente achaNomeCliente(String nome){
-        for (Conta conta : listaConta){
-            if (nome.equals(conta.getDono())){
-                return conta.getCliente();
+        for (Cliente cliente : listaCliente){
+            if (nome.equals(cliente.getNome())){
+                return cliente;
             }
         }
         throw new ContaNaoEncontradaException("Conta nao foi encontrada");
