@@ -112,6 +112,9 @@ public class Menu {
     }
 
     public void criarAdministrador(){
+        System.out.print("Por favor digite a chave interna do sistema: ");
+        String chave = in.next();
+        if(chave.equals(senhaKeyAdmin)){
         System.out.print("Crie seu login: ");
         String loginAdm = in.next();
 
@@ -123,6 +126,10 @@ public class Menu {
         administradorAtivo = adm;
         listaAdministrador.add(adm);
         administradorAtivo.setLogado();
+        }
+        else{
+            throw new SenhaIncorretamenteDigitadaException("Senha incorreta!!");
+        }
     }
 
     public void opcoesAdministrador() throws Exception {
