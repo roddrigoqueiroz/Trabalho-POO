@@ -9,7 +9,6 @@ import java.util.LinkedList;
  * TO DO:
  * - Arrumar pertencimento de conta(cliente possuir as contas)// PRECISO TESTAR MAIS TARDE
  * - CriarConta possui deve perguntar se já é cliente ou não antes de criá-lo
- * - Não deixar conta desativada funcionar
  */
 
 public class Menu {
@@ -338,6 +337,10 @@ public class Menu {
         double valor;
         String texto;
         Conta recebedor = null;
+        
+        if(c.getStatus().equals("Conta Desativada")){
+            throw new ContaDesativadaException("Sua conta esta desativada, por favor contatar o suporte do banco");
+        }
         while (logado){
             System.out.println(" ===Agencia Bancaria da UFU===");
             System.out.println("1.Fazer Saque");
@@ -350,7 +353,8 @@ public class Menu {
             System.out.printf("Opcao: ");
             op = in.nextInt();
             System.out.printf("\n");
-
+            
+            if(c.getStatus().equals("Conta Desativada")){return;}
             switch(op){
                 case(1):
                     System.out.println("Qual o valor do saque?"); 
