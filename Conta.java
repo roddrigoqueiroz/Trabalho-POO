@@ -27,10 +27,10 @@ public abstract class Conta {
         this.numeroAgencia = numeroAgencia;
 
     }
-    public abstract void saque(double valor);
-    public abstract void deposito(double valor);
+    public abstract Transacao saque(double valor);
+    public abstract Transacao deposito(double valor);
     public abstract double consultarSaldo();
-    public abstract void pagamento(double valor, Conta destino);
+    public abstract Transacao pagamento(double valor, Conta destino);
 
 
     public double getValorAux() { //usado somente em operacoes matematicas, so retornado para ver o valor antigo
@@ -158,7 +158,7 @@ public abstract class Conta {
     public LocalDate getDataAtual() {
         return dataAbertura = LocalDate.now();
     }
-    
+
     public Cliente getCliente() {
         return cliente;
     }
