@@ -35,13 +35,17 @@ public class ContaSalario extends Conta{
         if(valor > limiteSaque){throw new EstourouLimiteException("Erro!! Estourou o valor de limite!");}
         else {
             valorAux = getSaldo();
-            setSaldo(getSaldo()-valor);}
+            setSaldo(getSaldo()-valor);
+            Transacao t = new Transacao(this, getDataAtual(), "Caixa eletronico");
+            System.out.println(t.printRecibo());}
     }
 
     public void deposito(double valor){
         if(valor>0){
         valorAux = getSaldo();
-        setSaldo(getSaldo()+valor);}
+        setSaldo(getSaldo()+valor);
+        Transacao t = new Transacao(this, getDataAtual(), "Digital");
+        System.out.println(t.printRecibo());}
         else{throw new ValorMenorQue0Exception("Erro!! O valor deve ser maior que 0");}
     }
 
@@ -56,6 +60,8 @@ public class ContaSalario extends Conta{
             valorAux = getSaldo();
             setSaldo(getSaldo()-valor);
             destino.setSaldo(destino.getSaldo()+valor);
+            Transacao t = new Transacao(this, getDataAtual(), "Digital");
+            System.out.println(t.printRecibo());
         }
     }
 }  
