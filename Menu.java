@@ -152,6 +152,7 @@ public class Menu {
                     }
                     break;
                 case 3:
+                    criarFuncionario();
                     break;
                 case 4:
                     criarGerente();
@@ -161,6 +162,45 @@ public class Menu {
                 default: System.out.println("Valor digitado invalido");
             }
         }
+    }
+    
+    public void criarFuncionario(){
+        String CPF, nome, endereco, dataNasc, estadoCivil, CLT, RG, cargo;
+        double salario;
+        char sexo;
+        int anoIngresso;
+
+        System.out.printf("\n======Cadastro do Funcionario======\n");
+
+        System.out.print("Digite o CPF: ");
+        CPF = in.next();
+        System.out.print("Digite o nome: ");
+        nome = in.next();
+        System.out.print("Digite o endereco: ");
+        endereco = in.next();
+        System.out.print("Digite a data de nascimento: ");
+        dataNasc = in.next();
+        System.out.print("Digite o estado civil(Solteiro, Casado, Separado, Divorciado, Viuvo): ");
+        estadoCivil = in.next();
+        System.out.print("Digite a CLT: ");
+        CLT = in.next();
+        System.out.print("Digite o RG: ");
+        RG = in.next();
+        System.out.print("Digite o cargo: ");
+        cargo = in.next();
+        System.out.print("Digite o sexo(M ou F): ");
+        sexo = in.next().charAt(0);
+        System.out.print("Digite o salario a ser recebido: ");
+        salario = in.nextDouble();
+        System.out.print("Digite o ano de ingresso na empresa: ");
+        anoIngresso = in.nextInt();
+
+        listaFuncionario.add(new Funcionario( CPF,  nome,  endereco,  dataNasc, estadoCivil,  CLT, RG,  sexo,
+        cargo,  salario,  anoIngresso));
+
+        System.out.println("Funcionario criado com sucesso!");
+
+        return;
     }
 
     // problema com endereço por causa do espaço
