@@ -21,8 +21,16 @@ public class Menu {
     private LinkedList<Gerente> listaGerente = new LinkedList<Gerente>();
     private LinkedList<Funcionario> listaFuncionario = new LinkedList<Funcionario>();
     private LinkedList<Transacao> listaTransacao = new LinkedList<Transacao>();
-    private Administrador administradorAtivo;
+    private Administrador administradorAtivo = new Administrador();
     private Cliente clienteAtivo;
+
+    private final String CLIENTE_SER = "lista-cliente.ser";
+    private final String CONTA_SER = "lista-conta.ser";
+    private final String ADMIN_SER = "lista-admin.ser";
+    private final String AGENCIA_SER = "lista-agencia.ser";
+    private final String GERENTE_SER = "lista-gerente.ser";
+    private final String FUNCIONARIO_SER = "lista-funcionario.ser";
+    private final String TRANSACAO_SER = "lista-transacao.ser";
     
     Scanner in = new Scanner(System.in);
     
@@ -30,20 +38,22 @@ public class Menu {
 
     public void start(){
         int op;
+        carregar();
         while(true){
             System.out.printf("\n\nBem vindo a Agencia Bancaria da UFU!!\n");
             System.out.println("1.Fazer login");
             System.out.println("2.Criar conta");
-            System.out.println("3.Login Administrador");
-            System.out.println("4.Criar Administrador");
-            System.out.println("5.Sair");
+            System.out.println("3.Login administrador");
+            System.out.println("4.Criar administrador");
+            System.out.println("5.Imprimir administradores");
+            System.out.println("0.Salvar e sair");
             System.out.printf("Opcao: ");
             op = in.nextInt();
             System.out.printf("\n");
             switch(op){
                 case 1:
                     try {
-                        Conta c = loginCLiente();
+                        Conta c = loginCliente();
                         opcoesCliente(c);
                     } catch (Exception e){
                         System.out.println(e);
@@ -65,7 +75,16 @@ public class Menu {
                     criarAdministrador();
                     break;
                 case 5:
+                    for (Administrador a : listaAdministrador) {
+                        a.print();
+                    }
+                    break;
+                case 0:
                     in.close();
+                    for (Administrador a : listaAdministrador) {
+                        a.setDeslogado();
+                    }
+                    salvar();
                     return;
                 default:System.out.println("Valor digitado invalido");
         }
@@ -218,7 +237,7 @@ public class Menu {
         return;
     }
 
-    public Cliente loginCLiente() throws Exception {
+    public Conta loginCliente() throws Exception {
         String login, senha;
         System.out.println("======Login Cliente======");
         System.out.print("Digite seu nome: ");
@@ -287,10 +306,10 @@ public class Menu {
         System.out.printf("\nOpcao: ");
         op = in.nextInt();
         switch(op){
-            // case 1: Conta cc = new ContaCorrente(senha, cliente, numeroDaConta, numeroAgencia, 300, 0.005); // este erro é mentira
-            //     listaConta.add(cc);
-            //     numeroDaConta++;
-            //     break;
+            case 1: Conta cc = new ContaCorrente(senha, cliente, numeroDaConta, numeroAgencia, 300, 0.005); // este erro é mentira
+                listaConta.add(cc);
+                numeroDaConta++;
+                break;
             case 2: Conta cpoupanca = new ContaPoupanca(senha, cliente,  numeroDaConta, numeroAgencia, 1.1); 
                 listaConta.add(cpoupanca);
                 numeroDaConta++;
@@ -313,7 +332,7 @@ public class Menu {
         throw new Exception("Erro!! Numero errado ou agencia inexistente");
     }
     
-    public void salvarLista(LinkedList<Object> lista, String nomeArquivo) throws Exception {
+    public void salvarLista(LinkedList<?> lista, String nomeArquivo) throws Exception {
         if (lista.isEmpty())
             throw new Exception("Lista vazia. Nao foi possivel salvar.");
 
@@ -324,6 +343,51 @@ public class Menu {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+    public LinkedList<?> carregarLista(String nomeArquivo) throws Exception {    
+        File f = new File(nomeArquivo);
+        if (f.exists()){
+            try {
+                ObjectInputStream desserializador = new ObjectInputStream(new FileInputStream(nomeArquivo));
+                LinkedList<?> l = (LinkedList<?>)desserializador.readObject();
+                desserializador.close();
+                return l;
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        throw new Exception("Nao foi possivel carregar o arquivo.");
+    }
+
+    public boolean salvar(){
+        try {
+            salvarLista(listaCliente, CLIENTE_SER);
+            salvarLista(listaConta, CONTA_SER);
+            salvarLista(listaAdministrador, ADMIN_SER);
+            salvarLista(listaAgencia, AGENCIA_SER);
+            salvarLista(listaGerente, GERENTE_SER);
+            salvarLista(listaFuncionario, FUNCIONARIO_SER);
+            salvarLista(listaTransacao, TRANSACAO_SER);
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+    public boolean carregar(){
+        try {
+            carregarLista(CLIENTE_SER);
+            carregarLista(CONTA_SER);
+            carregarLista(ADMIN_SER);
+            carregarLista(AGENCIA_SER);
+            carregarLista(GERENTE_SER);
+            carregarLista(FUNCIONARIO_SER);
+            carregarLista(TRANSACAO_SER);
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 
     protected void logoff(){
@@ -346,8 +410,8 @@ public class Menu {
         }
         throw new ContaNaoEncontradaException("Conta nao foi encontrada");
     }
-    
-        public Cliente achaNomeCliente(String nome){
+
+    public Cliente achaNomeCliente(String nome){
         for (Conta conta : listaConta){
             if (nome.equals(conta.getDono())){
                 return conta.getCliente();
@@ -362,7 +426,6 @@ public class Menu {
         double valor;
         String texto;
         Conta recebedor = null;
-        
         if(c.getStatus().equals("Conta Desativada")){
             throw new ContaDesativadaException("Sua conta esta desativada, por favor contatar o suporte do banco");
         }
