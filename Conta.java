@@ -158,5 +158,9 @@ public abstract class Conta {
     public LocalDate getDataAtual() {
         return dataAbertura = LocalDate.now();
     }
+    
+    public Cliente getCliente() {
+        return cliente;
+    }
 
 }
